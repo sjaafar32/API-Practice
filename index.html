@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" placeholder="Search GIFs here!" style="width: 200px; height: 30px">
+    <button type="button" style="height: 40px; width: 80px">NEW GIF</button>
+    <div><img src="#"></div>
+    <script>
+        const img = document.querySelector('img');
+        const button = document.querySelector('button');
+        const input = document.querySelector('input');
+        
+        //this is await-async syntax
+        async function getGifs() {
+            const response = await fetch('https://api.giphy.com/v1/gifs/translate?api_key=HKbTqh6KmCj0Ap0QQFuFEi96MAMhZuty&s=' + input.value, {mode: 'cors'})
+            //await is used to get value from function where you'd normally use .then()
+            //Instead of using .then(), assign a variable to the result using await.
+            //Then you can handle the result as you would in your synchronous code.
+            const gifData = await response.json();
+            img.src = gifData.data.images.original.url;
+        }
+
+        button.addEventListener('click', () => {
+            getGifs().catch(function(error) {
+                alert('Fill in the search field');
+            });
+        });
+        
+        /*
+        
+        button.addEventListener('click', () => {
+            fetch('https://api.giphy.com/v1/gifs/translate?api_key=HKbTqh6KmCj0Ap0QQFuFEi96MAMhZuty&s='+input.value, {mode: 'cors'})
+            .then(function(response) {
+                return response.json(); //j.son returns a promise
+            })
+            .then(function(response) {
+                img.src = response.data.images.original.url;
+            })
+            .catch(function(error) {
+                alert('Fill in search field')
+            });
+        });
+        */
+    </script>
+</body>
+</html>
